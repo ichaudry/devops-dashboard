@@ -1,6 +1,16 @@
 import { useEffect, useState } from 'react';
 import { fetchMetric } from '../../api/prometheus';
-import { LineChart, Line, XAxis, YAxis, CartesianGrid, Tooltip, Legend, ResponsiveContainer } from 'recharts';
+import {
+  LineChart,
+  Line,
+  XAxis,
+  YAxis,
+  CartesianGrid,
+  Tooltip,
+  Legend,
+  ResponsiveContainer,
+} from 'recharts';
+import PanelWrapper from '../PanelWrapper';
 
 export default function DiskIOPanel() {
   const [data, setData] = useState([]);
@@ -23,19 +33,22 @@ export default function DiskIOPanel() {
   }, []);
 
   return (
-    <div className="bg-white shadow rounded-lg p-4">
-      <h2 className="text-lg font-semibold mb-2">Disk I/O (Bytes/sec)</h2>
+    <PanelWrapper title="Disk I/O (Bytes/sec)">
       <ResponsiveContainer width="100%" height={250}>
         <LineChart data={data}>
-          <CartesianGrid strokeDasharray="3 3" />
-          <XAxis dataKey="name" />
-          <YAxis />
-          <Tooltip />
-          <Legend />
-          <Line type="monotone" dataKey="Read" stroke="#8884d8" />
-          <Line type="monotone" dataKey="Write" stroke="#82ca9d" />
+          <CartesianGrid strokeDasharray="3 3" stroke="#ccc" />
+          <XAxis dataKey="name" stroke="#ccc" />
+          <YAxis stroke="#ccc" />
+          <Tooltip
+            contentStyle={{ backgroundColor: '#1e293b', border: 'none' }}
+            labelStyle={{ color: '#fff' }}
+            itemStyle={{ color: '#fff' }}
+          />
+          <Legend wrapperStyle={{ color: '#fff' }} />
+          <Line type="monotone" dataKey="Read" stroke="#3b82f6" strokeWidth={2} />
+          <Line type="monotone" dataKey="Write" stroke="#f97316" strokeWidth={2} />
         </LineChart>
       </ResponsiveContainer>
-    </div>
+    </PanelWrapper>
   );
 }

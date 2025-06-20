@@ -1,5 +1,6 @@
 import { useEffect, useState } from 'react';
 import { fetchMetric } from '../../api/prometheus';
+import PanelWrapper from '../PanelWrapper';
 
 function formatDuration(seconds) {
   const d = Math.floor(seconds / 86400);
@@ -26,9 +27,10 @@ export default function SystemUptimePanel() {
   }, []);
 
   return (
-    <div className="bg-white shadow rounded-lg p-4 text-center">
-      <h2 className="text-lg font-semibold mb-2">System Uptime</h2>
-      <p className="text-xl font-bold text-blue-700">{uptime ?? 'Loading...'}</p>
-    </div>
+    <PanelWrapper title="System Uptime">
+      <p className="text-2xl font-bold text-white text-center">
+        {uptime ?? 'Loading...'}
+      </p>
+    </PanelWrapper>
   );
 }

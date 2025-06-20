@@ -1,6 +1,15 @@
 import { useEffect, useState } from 'react';
 import { fetchMetric } from '../../api/prometheus';
-import { BarChart, Bar, XAxis, YAxis, CartesianGrid, Tooltip, ResponsiveContainer } from 'recharts';
+import {
+  BarChart,
+  Bar,
+  XAxis,
+  YAxis,
+  CartesianGrid,
+  Tooltip,
+  ResponsiveContainer,
+} from 'recharts';
+import PanelWrapper from '../PanelWrapper';
 
 export default function FilesystemUsagePanel() {
   const [data, setData] = useState([]);
@@ -23,17 +32,20 @@ export default function FilesystemUsagePanel() {
   }, []);
 
   return (
-    <div className="bg-white shadow rounded-lg p-4">
-      <h2 className="text-lg font-semibold mb-2">Filesystem Usage (%)</h2>
+    <PanelWrapper title="Filesystem Usage (%)">
       <ResponsiveContainer width="100%" height={250}>
         <BarChart data={data}>
-          <CartesianGrid strokeDasharray="3 3" />
-          <XAxis dataKey="name" />
-          <YAxis domain={[0, 100]} />
-          <Tooltip />
-          <Bar dataKey="usage" fill="#ff8c00" />
+          <CartesianGrid strokeDasharray="3 3" stroke="#ccc" />
+          <XAxis dataKey="name" stroke="#ccc" />
+          <YAxis domain={[0, 100]} stroke="#ccc" />
+          <Tooltip
+            contentStyle={{ backgroundColor: '#1e293b', border: 'none' }}
+            labelStyle={{ color: '#fff' }}
+            itemStyle={{ color: '#fff' }}
+          />
+          <Bar dataKey="usage" fill="#f97316" />
         </BarChart>
       </ResponsiveContainer>
-    </div>
+    </PanelWrapper>
   );
 }

@@ -1,5 +1,6 @@
 import { useEffect, useState } from 'react';
 import { fetchMetric } from '../../api/prometheus';
+import PanelWrapper from '../PanelWrapper';
 
 export default function CpuLoadPanel() {
   const [load, setLoad] = useState({ load1: 0, load5: 0, load15: 0 });
@@ -21,22 +22,21 @@ export default function CpuLoadPanel() {
   }, []);
 
   return (
-    <div className="bg-white shadow rounded-lg p-4 text-center">
-      <h2 className="text-lg font-semibold mb-4">CPU Load Averages</h2>
+    <PanelWrapper title="CPU Load Averages">
       <div className="flex justify-around text-xl font-medium">
-        <div>
-          <p className="text-gray-600">1m</p>
+        <div className="text-center">
+          <p className="text-gray-400 text-sm">1m</p>
           <p>{load.load1.toFixed(2)}</p>
         </div>
-        <div>
-          <p className="text-gray-600">5m</p>
+        <div className="text-center">
+          <p className="text-gray-400 text-sm">5m</p>
           <p>{load.load5.toFixed(2)}</p>
         </div>
-        <div>
-          <p className="text-gray-600">15m</p>
+        <div className="text-center">
+          <p className="text-gray-400 text-sm">15m</p>
           <p>{load.load15.toFixed(2)}</p>
         </div>
       </div>
-    </div>
+    </PanelWrapper>
   );
 }

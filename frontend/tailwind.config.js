@@ -10,6 +10,7 @@ module.exports = {
         softGray: "#F5F7FA",
         charcoal: "#2A2A2A",
         white: "#FFFFFF",
+        panelBg: "#121E36"
       },
       fontFamily: {
         inter: ["Inter", "sans-serif"],

@@ -1,6 +1,7 @@
 import { useEffect, useState } from 'react';
 import { fetchMetric } from '../../api/prometheus';
 import { BarChart, Bar, XAxis, YAxis, CartesianGrid, Tooltip, ResponsiveContainer } from 'recharts';
+import PanelWrapper from '../PanelWrapper';
 
 export default function CpuUsagePanel() {
   const [data, setData] = useState([]);
@@ -18,17 +19,20 @@ export default function CpuUsagePanel() {
   }, []);
 
   return (
-    <div className="bg-white shadow rounded-lg p-4">
-      <h2 className="text-lg font-semibold mb-2">CPU Usage per Core</h2>
+    <PanelWrapper title="CPU Usage per Core">
       <ResponsiveContainer width="100%" height={250}>
         <BarChart data={data}>
-          <CartesianGrid strokeDasharray="3 3" />
-          <XAxis dataKey="name" />
-          <YAxis />
-          <Tooltip />
-          <Bar dataKey="value" fill="#8884d8" />
+          <CartesianGrid strokeDasharray="3 3" stroke="#ccc" />
+          <XAxis dataKey="name" stroke="#ccc" />
+          <YAxis stroke="#ccc" />
+          <Tooltip
+            contentStyle={{ backgroundColor: '#1e293b', border: 'none' }}
+            labelStyle={{ color: '#fff' }}
+            itemStyle={{ color: '#fff' }}
+          />
+          <Bar dataKey="value" fill="#3b82f6" />
         </BarChart>
       </ResponsiveContainer>
-    </div>
+    </PanelWrapper>
   );
 }
