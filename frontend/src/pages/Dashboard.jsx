@@ -1,64 +1,56 @@
-import { useNavigate } from "react-router-dom";
-import { useEffect, useState } from "react";
-import { fetchMetric } from "../api/prometheus";
-import ChartCard from "../components/ChartCard";
+
+// src/pages/Dashboard.jsx
+import { useNavigate } from 'react-router-dom';
+import { useAuth } from '../context/AuthContext';
+import CpuUsagePanel from '../components/panels/CpuUsagePanel';
+import MemoryUsagePanel from '../components/panels/MemoryUsagePanel';
+import NetworkTrafficPanel from '../components/panels/NetworkTrafficPanel';
+import UptimePanel from '../components/panels/UptimePanel';
+import DiskIOPanel from '../components/panels/DiskIOPanel';
+import FilesystemUsagePanel from '../components/panels/FilesystemUsagePanel';
+import CpuLoadPanel from '../components/panels/CpuLoadPanel';
+import SystemUptimePanel from '../components/panels/SystemUptimePanel';
+
+
 
 export default function Dashboard() {
+  const { role, logout } = useAuth();
   const navigate = useNavigate();
-  const [cpuData, setCpuData] = useState([]);
 
   const handleLogout = () => {
-    navigate("/");
+    logout();
+    navigate('/');
   };
-
-  // Transform Prometheus data for Recharts
-  const transformCpuData = (raw) => {
-    const grouped = {};
-
-    raw.forEach((item) => {
-      const mode = item.metric.mode;
-      const cpu = `CPU ${item.metric.cpu}`;
-      const value = parseFloat(item.value[1]);
-
-      if (!grouped[mode]) {
-        grouped[mode] = { mode };
-      }
-      grouped[mode][cpu] = value;
-    });
-
-    return Object.values(grouped);
-  };
-
-  useEffect(() => {
-    const loadCpuStats = async () => {
-      const result = await fetchMetric("rate(node_cpu_seconds_total[1m])");
-      const processed = transformCpuData(result);
-      setCpuData(processed);
-    };
-
-    loadCpuStats();
-  }, []);
 
   return (
-    <div className="min-h-screen bg-[#F5F7FA] text-[#2A2A2A] px-6 py-6 font-['IBM Plex Sans']">
-      <div className="flex justify-between items-center mb-6">
-        <h1 className="text-4xl font-bold text-[#1D3B7C] font-inter">
-          DevOps Monitoring Dashboard
-        </h1>
-        <button
-          onClick={handleLogout}
-          className="bg-[#F68B1E] hover:bg-orange-500 text-white px-4 py-2 rounded shadow font-inter"
-        >
+    <div className="p-4">
+      <div className="flex justify-between items-center mb-4">
+        <h1 className="text-2xl font-bold">Dashboard</h1>
+        <button onClick={handleLogout} className="bg-red-500 text-white px-4 py-2 rounded shadow">
           Logout
         </button>
       </div>
 
-      <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-        <ChartCard
-          title="CPU Usage by Mode"
-          data={cpuData}
-          color="#1D3B7C"
-        />
+      {/* 🟩 FULL-WIDTH UPTIME PANEL FOR ADMINS */}
+      {role === 'admin' && (
+        <div className="mb-4">
+          <UptimePanel />
+        </div>
+      )}
+
+      {/* 🟦 GRID OF CARDS */}
+      <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4">
+        {role === 'admin' && (
+          <>
+            <CpuLoadPanel />
+            <SystemUptimePanel />
+            <DiskIOPanel />
+            <FilesystemUsagePanel />            
+          </>
+        )}
+        <CpuUsagePanel />
+        <MemoryUsagePanel />
+        <NetworkTrafficPanel />
       </div>
     </div>
   );
