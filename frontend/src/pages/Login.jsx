@@ -36,10 +36,18 @@ export default function Login() {
     <div className="min-h-screen bg-gradient-to-br from-[#0f172a] via-[#1e293b] to-[#0f172a] text-white flex items-center justify-center px-4">
       <div className="max-w-md w-full bg-white/5 backdrop-blur-sm rounded-2xl p-8 shadow-xl border border-white/10">
         {/* Logo */}
-        <div className="text-center mb-8">
+        <div className="text-center mb-8">                  
           <img src={logo} alt="InfraSight Logo" className="h-16 mx-auto mb-4" />
           <h1 className="text-3xl font-bold text-white">InfraSight</h1>
-          <p className="text-sm text-gray-300">Infrastructure monitoring made simple.</p>
+          <p className="text-sm text-gray-300 mb-2">
+            Real-time infrastructure monitoring.
+          </p>
+          <p className="text-sm text-gray-400">
+            A Single Pane of Glass for Monitoring Infrastructure Performance, Resource Usage, and System Health Across All Your Environments.
+          </p>
+          <div className="inline-block mt-2 px-3 py-1 text-xs font-medium text-emerald-400 bg-emerald-900/20 rounded-full">
+            ✨ New Panels Added
+          </div>
         </div>
 
         {/* Login UI */}

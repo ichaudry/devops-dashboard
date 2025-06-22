@@ -1,18 +1,36 @@
-import { createContext, useContext, useState } from "react";
+import { createContext, useContext, useEffect, useState } from 'react';
 
 const AuthContext = createContext();
 
-export const AuthProvider = ({ children }) => {
-  const [role, setRole] = useState(null); // "admin" or "viewer"
+export function AuthProvider({ children }) {
+  const [role, setRole] = useState(null);
+  const [loading, setLoading] = useState(true);
 
-  const login = (selectedRole) => setRole(selectedRole);
-  const logout = () => setRole(null);
+  useEffect(() => {
+    const savedRole = localStorage.getItem('role');
+    if (savedRole) {
+      setRole(savedRole);
+    }
+    setLoading(false);
+  }, []);
+
+  const login = (newRole) => {
+    setRole(newRole);
+    localStorage.setItem('role', newRole);
+  };
+
+  const logout = () => {
+    setRole(null);
+    localStorage.removeItem('role');
+  };
 
   return (
-    <AuthContext.Provider value={{ role, login, logout }}>
+    <AuthContext.Provider value={{ role, login, logout, loading }}>
       {children}
     </AuthContext.Provider>
   );
-};
+}
 
-export const useAuth = () => useContext(AuthContext);
+export function useAuth() {
+  return useContext(AuthContext);
+}

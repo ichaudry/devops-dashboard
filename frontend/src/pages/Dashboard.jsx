@@ -1,4 +1,3 @@
-import { useNavigate } from 'react-router-dom';
 import { useAuth } from '../context/AuthContext';
 import CpuUsagePanel from '../components/panels/CpuUsagePanel';
 import MemoryUsagePanel from '../components/panels/MemoryUsagePanel';
@@ -8,21 +7,21 @@ import DiskIOPanel from '../components/panels/DiskIOPanel';
 import FilesystemUsagePanel from '../components/panels/FilesystemUsagePanel';
 import CpuLoadPanel from '../components/panels/CpuLoadPanel';
 import SystemUptimePanel from '../components/panels/SystemUptimePanel';
+import AlertSummaryPanel from '../components/panels/AlertSummaryPanel';
 import logo from '../assets/icon.png';
 
 export default function Dashboard() {
   const { role, logout } = useAuth();
-  const navigate = useNavigate();
 
   const handleLogout = () => {
     logout();
-    navigate('/');
+    window.location.href = '/'; // force reset session
   };
 
   return (
     <div className="min-h-screen bg-gradient-to-b from-[#0f172a] via-[#1e293b] to-[#0f172a] text-white font-inter">
       {/* 🔷 Top Bar */}
-      <header className="sticky top-0 z-50 bg-white/5 backdrop-blur-md shadow-md border-b border-white/10 px-6 py-4 flex justify-between items-center">
+      <header className="sticky top-0 z-50 bg-white/5 backdrop-blur-md shadow-md border-b border-white/10 px-6 py-4 flex justify-between items-center mb-4">
         <div className="flex items-center gap-3">
           <img src={logo} alt="InfraSight Logo" className="h-8" />
           <h1 className="text-xl font-bold tracking-wide">InfraSight</h1>
@@ -38,7 +37,14 @@ export default function Dashboard() {
         </button>
       </header>
 
-      {/* 🟩 Uptime Panel */}
+      {/* 🟨 AI Summary */}
+      {role === 'admin' && (
+        <div className="px-4 mb-4">
+          <AlertSummaryPanel />
+        </div>
+      )}
+
+      {/* 🟩 Uptime */}
       {role === 'admin' && (
         <div className="px-4 mt-4">
           <UptimePanel />

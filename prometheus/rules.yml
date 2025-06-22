@@ -1,0 +1,92 @@
+groups:
+  - name: test-alerts
+    rules:
+      - alert: HighCPUUsageNode01
+        expr: vector(1)
+        for: 0s
+        labels:
+          severity: critical
+          instance: node-01
+        annotations:
+          description: CPU usage exceeded 95% for over 5 minutes on node-01. Affected containers: api-server, auth-service.
+
+      - alert: DiskSpaceLowRoot
+        expr: vector(1)
+        for: 0s
+        labels:
+          severity: warning
+          instance: node-02
+        annotations:
+          description: Disk usage is above 90% on /dev/sda1 mounted at /. Logging and deployment may be impacted.
+
+      - alert: NodeExporterUnreachable
+        expr: vector(1)
+        for: 0s
+        labels:
+          severity: critical
+          instance: node-03
+        annotations:
+          description: Prometheus cannot scrape metrics from node-exporter. Network or service issues suspected.
+
+      - alert: MemoryPressureNode03
+        expr: vector(1)
+        for: 0s
+        labels:
+          severity: warning
+          instance: node-03
+        annotations:
+          description: Memory usage stayed above 92% for 10+ minutes. Swap activity increasing.
+
+      - alert: K8sAPILatencySpike
+        expr: vector(1)
+        for: 0s
+        labels:
+          severity: high
+          instance: k8s-api
+        annotations:
+          description: /api latency exceeded 2s at 95th percentile. May indicate etcd contention.
+
+      - alert: RedisCrashLoop
+        expr: vector(1)
+        for: 0s
+        labels:
+          severity: warning
+          instance: redis-cache
+        annotations:
+          description: redis-cache pod restarted 5 times in 10 mins. Exit code 137 suggests OOM kill.
+
+      - alert: UnauthorizedAccess
+        expr: vector(1)
+        for: 0s
+        labels:
+          severity: high
+          instance: bastion-host
+        annotations:
+          description: Repeated failed SSH logins from IP 192.168.1.88. Lockout policy triggered.
+
+      - alert: FilesystemReadErrors
+        expr: vector(1)
+        for: 0s
+        labels:
+          severity: critical
+          instance: node-01
+        annotations:
+          description: I/O errors in Docker storage path /var/lib/docker. Container stability at risk.
+
+      - alert: HighNetworkLatency
+        expr: vector(1)
+        for: 0s
+        labels:
+          severity: warning
+          instance: eth0
+        annotations:
+          description: Network latency over 100ms to database cluster. Check routing and bandwidth.
+
+      - alert: ServiceDownPaymentsAPI
+        expr: vector(1)
+        for: 0s
+        labels:
+          severity: critical
+          instance: payments-api
+        annotations:
+          description: Service health check for payments-api failed. Blackbox probe unreachable.
